@@ -18,7 +18,7 @@ public class UpMover : MonoBehaviour
     {
         if (!main_script.gameOver)
         {
-            transform.Translate(0, 0.02f, 0);
+            transform.Translate(0, 1.2f * Time.deltaTime, 0);
         }
     }
 }

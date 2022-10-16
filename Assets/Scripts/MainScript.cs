@@ -10,6 +10,8 @@ public class MainScript : MonoBehaviour
     public int energyBar = 100;
     public bool gameOver = false;
 
+    public float incTime;
+
     public GameObject left;
     public GameObject up;
     public GameObject down;
@@ -69,17 +71,17 @@ public class MainScript : MonoBehaviour
 
     //HOW MANY TIMES A MULTI ARROW HAS BEEN PRESSED
 
-    int leftMultiPressed = 0;
-    int upMultiPressed = 0;
-    int downMultiPressed = 0;
-    int rightMultiPressed = 0;
+    float leftMultiPressed = 0;
+    float upMultiPressed = 0;
+    float downMultiPressed = 0;
+    float rightMultiPressed = 0;
 
     //THE START TIME OF THE MOST RECENT LONG PRESS OR MULTI PRESS
 
-    int leftDownTime = 0;
-    int upDownTime = 0;
-    int downDownTime = 0;
-    int rightDownTime = 0;
+    float leftDownTime = 0;
+    float upDownTime = 0;
+    float downDownTime = 0;
+    float rightDownTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -96,40 +98,41 @@ public class MainScript : MonoBehaviour
             Debug.Log(lines[i]);
             string[] props = Regex.Split(lines[i], "-");
             Debug.Log(props[0]);
-            if (Equals(props[2],"Left"))
+            if (Equals(props[2],"L"))
             {
-                leftTime.Add(int.Parse(props[1]));
+                leftTime.Add(float.Parse(props[1]));
                 leftType.Add(props[0]);
-                if (!Equals(props[0], "Short"))
+                if (!Equals(props[0], "s"))
                 {
-                    leftDuration.Add(int.Parse(props[3]));
+                    leftDuration.Add(float.Parse(props[3]));
                 }
             }
-            if (Equals(props[2], "Up"))
+            if (Equals(props[2], "U"))
             {
-                upTime.Add(int.Parse(props[1]));
+                Debug.Log(props[1].Trim());
+                upTime.Add(float.Parse(props[1]));
                 upType.Add(props[0]);
-                if (!Equals(props[0], "Short"))
+                if (!Equals(props[0], "s"))
                 {
-                    upDuration.Add(int.Parse(props[3]));
+                    upDuration.Add(float.Parse(props[3]));
                 }
             }
-            if (Equals(props[2], "Down"))
+            if (Equals(props[2], "D"))
             {
-                downTime.Add(int.Parse(props[1]));
+                downTime.Add(float.Parse(props[1]));
                 downType.Add(props[0]);
-                if (!Equals(props[0], "Short"))
+                if (!Equals(props[0], "s"))
                 {
-                    downDuration.Add(int.Parse(props[3]));
+                    downDuration.Add(float.Parse(props[3]));
                 }
             }
-            if (Equals(props[2], "Right"))
+            if (Equals(props[2], "R"))
             {
-                rightTime.Add(int.Parse(props[1]));
+                rightTime.Add(float.Parse(props[1]));
                 rightType.Add(props[0]);
-                if (!Equals(props[0], "Short"))
+                if (!Equals(props[0], "s"))
                 {
-                    rightDuration.Add(int.Parse(props[3]));
+                    rightDuration.Add(float.Parse(props[3]));
                 }
             }
         }
@@ -140,22 +143,24 @@ public class MainScript : MonoBehaviour
     {
         int timer = Time.frameCount;
 
+        incTime = incTime + Time.deltaTime;
+
         //LEFT FACTORY
 
         if (leftTime.Count > 0)
         {
-            if ((int)leftTime[0] == timer)
+            if ((float)leftTime[0] <= incTime)
             {
                 GameObject tempLeft = Instantiate(left, new Vector3(-3, -4, 0), Quaternion.identity);
                 tempLeft.AddComponent<UpMover>();
                 tempLeft.AddComponent<ArrowProps>();
-                tempLeft.GetComponent<ArrowProps>().time = timer;
+                tempLeft.GetComponent<ArrowProps>().time = incTime;
                 tempLeft.GetComponent<ArrowProps>().type = leftType[0].ToString();
-                if (!Equals(leftType[0].ToString(), "Short"))
+                if (!Equals(leftType[0].ToString(), "s"))
                 {
-                    tempLeft.GetComponent<ArrowProps>().duration = (int)leftDuration[0];
-                    tempLeft.transform.localScale = new Vector3(1, 0.02f * (int)leftDuration[0], 1);
-                    tempLeft.transform.position = tempLeft.transform.position + new Vector3(0, -0.01f * (int)leftDuration[0], 0);
+                    tempLeft.GetComponent<ArrowProps>().duration = (float)leftDuration[0];
+                    tempLeft.transform.localScale = new Vector3(1, 1.2f*(float)leftDuration[0], 1);
+                    tempLeft.transform.position = tempLeft.transform.position + new Vector3(0, -0.6f * (float)leftDuration[0], 0);
                     leftDuration.RemoveAt(0);
                 }
                 else
@@ -174,18 +179,18 @@ public class MainScript : MonoBehaviour
 
         if (upTime.Count > 0)
         {
-            if ((int)upTime[0] == timer)
+            if ((float)upTime[0]  <= incTime)
             {
                 GameObject tempUp = Instantiate(up, new Vector3(-1, -4, 0), Quaternion.identity);
                 tempUp.AddComponent<UpMover>();
                 tempUp.AddComponent<ArrowProps>();
-                tempUp.GetComponent<ArrowProps>().time = timer;
+                tempUp.GetComponent<ArrowProps>().time = incTime;
                 tempUp.GetComponent<ArrowProps>().type = upType[0].ToString();
-                if (!Equals(upType[0].ToString(), "Short"))
+                if (!Equals(upType[0].ToString(), "s"))
                 {
-                    tempUp.GetComponent<ArrowProps>().duration = (int)upDuration[0];
-                    tempUp.transform.localScale = new Vector3(1, 0.02f * (int)upDuration[0], 1);
-                    tempUp.transform.position = tempUp.transform.position + new Vector3(0, -0.01f * (int)upDuration[0], 0);
+                    tempUp.GetComponent<ArrowProps>().duration = (float)upDuration[0];
+                    tempUp.transform.localScale = new Vector3(1, 1.2f*(float)upDuration[0], 1);
+                    tempUp.transform.position = tempUp.transform.position + new Vector3(0, -0.6f*(float)upDuration[0], 0);
                     upDuration.RemoveAt(0);
                 }
                 upArrows.Add(tempUp);
@@ -199,18 +204,18 @@ public class MainScript : MonoBehaviour
 
         if (downTime.Count > 0)
         {
-            if ((int)downTime[0] == timer)
+            if ((float)downTime[0] <= incTime)
             {
                 GameObject tempDown = Instantiate(down, new Vector3(1, -4, 0), Quaternion.identity);
                 tempDown.AddComponent<UpMover>();
                 tempDown.AddComponent<ArrowProps>();
-                tempDown.GetComponent<ArrowProps>().time = timer;
+                tempDown.GetComponent<ArrowProps>().time = incTime;
                 tempDown.GetComponent<ArrowProps>().type = downType[0].ToString();
-                if (!Equals(downType[0].ToString(), "Short"))
+                if (!Equals(downType[0].ToString(), "s"))
                 {
-                    tempDown.GetComponent<ArrowProps>().duration = (int)downDuration[0];
-                    tempDown.transform.localScale = new Vector3(1, 0.02f * (int)downDuration[0], 1);
-                    tempDown.transform.position = tempDown.transform.position + new Vector3(0, -0.01f * (int)downDuration[0], 0);
+                    tempDown.GetComponent<ArrowProps>().duration = (float)downDuration[0];
+                    tempDown.transform.localScale = new Vector3(1, 1.2f * (float)downDuration[0], 1);
+                    tempDown.transform.position = tempDown.transform.position + new Vector3(0, -0.6f * (float)downDuration[0], 0);
                     downDuration.RemoveAt(0);
                 }
                 downArrows.Add(tempDown);
@@ -224,18 +229,18 @@ public class MainScript : MonoBehaviour
 
         if (rightTime.Count > 0)
         {
-            if ((int)rightTime[0] == timer)
+            if ((float)rightTime[0] <= incTime)
             {
                 GameObject tempRight = Instantiate(right, new Vector3(3, -4, 0), Quaternion.identity);
                 tempRight.AddComponent<UpMover>();
                 tempRight.AddComponent<ArrowProps>();
-                tempRight.GetComponent<ArrowProps>().time = timer;
+                tempRight.GetComponent<ArrowProps>().time = incTime;
                 tempRight.GetComponent<ArrowProps>().type = rightType[0].ToString();
-                if (!Equals(rightType[0].ToString(), "Short"))
+                if (!Equals(rightType[0].ToString(), "s"))
                 {
-                    tempRight.GetComponent<ArrowProps>().duration = (int)rightDuration[0];
-                    tempRight.transform.localScale = new Vector3(1, 0.02f * (int)rightDuration[0], 1);
-                    tempRight.transform.position = tempRight.transform.position + new Vector3(0, -0.01f * (int)rightDuration[0]);
+                    tempRight.GetComponent<ArrowProps>().duration = (float)rightDuration[0];
+                    tempRight.transform.localScale = new Vector3(1, 1.2f * (float)rightDuration[0], 1);
+                    tempRight.transform.position = tempRight.transform.position + new Vector3(0, -0.6f * (float)rightDuration[0]);
                     rightDuration.RemoveAt(0);
                 }
                 rightArrows.Add(tempRight);
@@ -281,34 +286,34 @@ public class MainScript : MonoBehaviour
 
         if (Input.GetKey("left") && leftArrows.Count > 0)
         {
-            if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "Short"))
+            if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "s"))
             {
                 if (determineAccuracy(currentLeft))
                 {
                     leftArrows.RemoveAt(0);
                 }
             }
-            if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "Long"))
+            if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "l"))
             {
-                leftDownTime = Time.frameCount;
+                leftDownTime = incTime;
                 leftLongDown = true;
             }
-            if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "Multi"))
+            if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "m"))
             {
                 if (!leftMultiDown)
                 {
-                    leftDownTime = Time.frameCount;
+                    leftDownTime = incTime;
                 }
                 leftMultiPressed += 1;
-                Debug.Log(leftMultiPressed);
+                leftMultiDown = true;
                 if (leftMultiPressed == currentLeft.GetComponent<ArrowProps>().duration)
                 {
-                    int multiFinishTime = Time.frameCount;
+                    float multiFinishTime = incTime;
                     determineMultiAccuracy(leftDownTime, multiFinishTime, currentLeft.GetComponent<ArrowProps>().time, currentLeft.GetComponent<ArrowProps>().duration);
                     Object.Destroy(currentLeft);
                     leftArrows.RemoveAt(0);
+                    leftMultiDown = false;
                 }
-                leftMultiDown = true;
             }
             leftDown = true;
         }
@@ -319,8 +324,9 @@ public class MainScript : MonoBehaviour
             if (leftLongDown)
             {
                 leftLongDown = false;
-                determineLongAccuracy(leftDownTime, Time.frameCount, currentLeft.GetComponent<ArrowProps>().time, currentLeft.GetComponent<ArrowProps>().duration);
+                determineLongAccuracy(leftDownTime, incTime, currentLeft.GetComponent<ArrowProps>().time, currentLeft.GetComponent<ArrowProps>().duration);
                 Object.Destroy(currentLeft);
+                leftArrows.RemoveAt(0);
             }
         }
 
@@ -328,34 +334,35 @@ public class MainScript : MonoBehaviour
 
         if (Input.GetKey("up") && upArrows.Count > 0)
         {
-            if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "Short"))
+            if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "s"))
             {
                 if (determineAccuracy(currentUp))
                 {
                     upArrows.RemoveAt(0);
                 }
             }
-            if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "Long"))
+            if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "l"))
             {
-                upDownTime = Time.frameCount;
+                upDownTime = incTime;
                 upLongDown = true;
             }
-            if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "Multi"))
+            if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "m"))
             {
                 if (!upMultiDown)
                 {
-                    upDownTime = Time.frameCount;
+                    upDownTime = incTime;
                 }
                 upMultiPressed += 1;
-                Debug.Log(upMultiPressed);
+                upMultiDown = true;
                 if (upMultiPressed == currentUp.GetComponent<ArrowProps>().duration)
                 {
-                    int multiFinishTime = Time.frameCount;
+                    float multiFinishTime = incTime;
                     determineMultiAccuracy(upDownTime, multiFinishTime, currentUp.GetComponent<ArrowProps>().time, currentUp.GetComponent<ArrowProps>().duration);
                     Object.Destroy(currentUp);
+
                     upArrows.RemoveAt(0);
+                    upMultiDown = false;
                 }
-                upMultiDown = true;
             }
             upDown = true;
         }
@@ -368,8 +375,10 @@ public class MainScript : MonoBehaviour
             if (upLongDown)
             {
                 upLongDown = false;
-                determineLongAccuracy(upDownTime, Time.frameCount, currentUp.GetComponent<ArrowProps>().time, currentUp.GetComponent<ArrowProps>().duration);
+                Debug.Log("TIME " + currentUp.GetComponent<ArrowProps>().time);
+                determineLongAccuracy(upDownTime, incTime, currentUp.GetComponent<ArrowProps>().time, currentUp.GetComponent<ArrowProps>().duration);
                 Object.Destroy(currentUp);
+                upArrows.RemoveAt(0);
             }
         }
 
@@ -377,34 +386,34 @@ public class MainScript : MonoBehaviour
 
         if (Input.GetKey("down") && downArrows.Count > 0)
         {
-            if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "Short"))
+            if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "s"))
             {
                 if (determineAccuracy(currentDown))
                 {
                     downArrows.RemoveAt(0);
                 }
             }
-            if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "Long"))
+            if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "l"))
             {
-                downDownTime = Time.frameCount;
+                downDownTime = incTime;
                 downLongDown = true;
             }
-            if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "Multi"))
+            if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "m"))
             {
                 if (!downMultiDown)
                 {
-                    downDownTime = Time.frameCount;
+                    downDownTime = incTime;
                 }
                 downMultiPressed += 1;
-                Debug.Log(downMultiPressed);
+                downMultiDown = true;
                 if (downMultiPressed == currentDown.GetComponent<ArrowProps>().duration)
                 {
-                    int multiFinishTime = Time.frameCount;
+                    float multiFinishTime = incTime;
                     determineMultiAccuracy(downDownTime, multiFinishTime, currentDown.GetComponent<ArrowProps>().time, currentDown.GetComponent<ArrowProps>().duration);
                     Object.Destroy(currentDown);
                     downArrows.RemoveAt(0);
+                    downMultiDown = false;
                 }
-                downMultiDown = true;
             }
             downDown = true;
         }
@@ -417,8 +426,9 @@ public class MainScript : MonoBehaviour
             if (downLongDown)
             {
                 downLongDown = false;
-                determineLongAccuracy(downDownTime, Time.frameCount, currentDown.GetComponent<ArrowProps>().time, currentDown.GetComponent<ArrowProps>().duration);
+                determineLongAccuracy(downDownTime, incTime, currentDown.GetComponent<ArrowProps>().time, currentDown.GetComponent<ArrowProps>().duration);
                 Object.Destroy(currentDown);
+                downArrows.RemoveAt(0);
             }
         }
 
@@ -426,34 +436,34 @@ public class MainScript : MonoBehaviour
 
         if (Input.GetKey("right") && rightArrows.Count > 0)
         {
-            if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "Short"))
+            if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "s"))
             {
                 if (determineAccuracy(currentRight))
                 {
                     rightArrows.RemoveAt(0);
                 }
             }
-            if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "Long"))
+            if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "l"))
             {
-                rightDownTime = Time.frameCount;
+                rightDownTime = incTime;
                 rightLongDown = true;
             }
-            if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "Multi"))
+            if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "m"))
             {
                 if (!rightMultiDown)
                 {
-                    rightDownTime = Time.frameCount;
+                    rightDownTime = incTime;
                 }
                 rightMultiPressed += 1;
-                Debug.Log(rightMultiPressed);
+                rightMultiDown = true;
                 if (rightMultiPressed == currentRight.GetComponent<ArrowProps>().duration)
                 {
-                    int multiFinishTime = Time.frameCount;
+                    float multiFinishTime = incTime;
                     determineMultiAccuracy(rightDownTime, multiFinishTime, currentRight.GetComponent<ArrowProps>().time, currentRight.GetComponent<ArrowProps>().duration);
                     Object.Destroy(currentRight);
                     rightArrows.RemoveAt(0);
+                    rightMultiDown = false;
                 }
-                rightMultiDown = true;
             }
             rightDown = true;
         }
@@ -466,8 +476,9 @@ public class MainScript : MonoBehaviour
             if (rightLongDown)
             {
                 rightLongDown = false;
-                determineLongAccuracy(rightDownTime, Time.frameCount, currentRight.GetComponent<ArrowProps>().time, currentRight.GetComponent<ArrowProps>().duration);
+                determineLongAccuracy(rightDownTime, incTime, currentRight.GetComponent<ArrowProps>().time, currentRight.GetComponent<ArrowProps>().duration);
                 Object.Destroy(currentRight);
+                rightArrows.RemoveAt(0);
             }
         }
 
@@ -554,10 +565,18 @@ public class MainScript : MonoBehaviour
         return isAccurate;
     }
 
-    public void determineLongAccuracy(int realStartTime, int endTime, int startTime, int duration)
+    public void determineLongAccuracy(float realStartTime, float endTime, float startTime, float duration)
     {
         float durationAccuracy = (float) (endTime - realStartTime) / duration;
-        int startAccuracy = Mathf.Abs(startTime - realStartTime + 300);
+        float startAccuracy = Mathf.Abs(startTime - realStartTime + 5);
+
+        Debug.Log("rst " + realStartTime);
+        Debug.Log("et " + endTime);
+        Debug.Log("st " + startTime);
+        Debug.Log("d " + duration);
+        Debug.Log("da " + durationAccuracy);
+        Debug.Log("sa " +startAccuracy);
+
 
         bool isAccurate = false;
         if (startAccuracy < 10 && (durationAccuracy < 1.1 || durationAccuracy > 0.9))
@@ -581,10 +600,10 @@ public class MainScript : MonoBehaviour
         }
     }
 
-    public void determineMultiAccuracy(int realStartTime, int endTime, int startTime, int duration)
+    public void determineMultiAccuracy(float realStartTime, float endTime, float startTime, float duration)
     {
         float durationAccuracy = (float)(endTime - realStartTime) / duration;
-        int startAccuracy = Mathf.Abs(startTime - realStartTime + 300);
+        float startAccuracy = Mathf.Abs(startTime - realStartTime + 300);
         Debug.Log(durationAccuracy);
 
         bool isAccurate = false;

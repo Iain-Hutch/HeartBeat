@@ -5,9 +5,9 @@ using UnityEngine;
 public class ArrowProps : MonoBehaviour
 {
 
-    public int duration;
+    public float duration;
     public string type;
-    public int time;
+    public float time;
 
     // Start is called before the first frame update
     void Start()
