@@ -39,7 +39,6 @@ public class ButtonHandler : MonoBehaviour
 
     public void ToMainGameScreen(string level)
     {
-        SceneManager.LoadScene(0, LoadSceneMode.Single);
         if (Equals(level, "1"))
         {
             PlayerPrefs.SetString("Level", "1");
@@ -52,10 +51,17 @@ public class ButtonHandler : MonoBehaviour
         {
             PlayerPrefs.SetString("Level", "3");
         }
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
     public void SetDifficulty(string diff)
     {
         PlayerPrefs.SetString("Difficulty", diff);
+    }
+
+    public void unpause()
+    {
+        string prevScreen = PlayerPrefs.GetString("PreviousScreenPaused");
+
     }
 }

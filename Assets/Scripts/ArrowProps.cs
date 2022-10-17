@@ -31,7 +31,7 @@ public class ArrowProps : MonoBehaviour
             stopping = true;
             stopTime = main_script.incTime;
         }
-        if ((main_script.incTime - stopTime) > duration * 0.1)
+        if ((main_script.incTime - stopTime) > duration * 0.05)
         {
             stopping = false;
         }

@@ -20,6 +20,9 @@ public class MainScript : MonoBehaviour
     public GameObject up;
     public GameObject down;
     public GameObject right;
+    public GameObject pause;
+
+    GameObject pauseScreen;
 
     //TIME WHEN ARROW APPEARS
 
@@ -58,6 +61,7 @@ public class MainScript : MonoBehaviour
     bool upDown = false;
     bool downDown = false;
     bool rightDown = false;
+    bool escDown = false;
 
     //WHETHER A LONG PRESS IS IN PROGRESS
 
@@ -160,11 +164,16 @@ public class MainScript : MonoBehaviour
                 tempLeft.AddComponent<ArrowProps>();
                 tempLeft.GetComponent<ArrowProps>().time = incTime;
                 tempLeft.GetComponent<ArrowProps>().type = leftType[0].ToString();
-                if (!Equals(leftType[0].ToString(), "s"))
+                if (Equals(leftType[0].ToString(), "l"))
                 {
                     tempLeft.GetComponent<ArrowProps>().duration = (float)leftDuration[0];
                     tempLeft.transform.localScale = new Vector3(1, 1.2f*(float)leftDuration[0], 1);
                     tempLeft.transform.position = tempLeft.transform.position + new Vector3(0, -0.6f * (float)leftDuration[0], 0);
+                    leftDuration.RemoveAt(0);
+                }
+                else if (Equals(leftType[0].ToString(), "m"))
+                {
+                    tempLeft.GetComponent<ArrowProps>().duration = (float)leftDuration[0];
                     leftDuration.RemoveAt(0);
                 }
                 else
@@ -189,12 +198,23 @@ public class MainScript : MonoBehaviour
                 tempUp.AddComponent<ArrowProps>();
                 tempUp.GetComponent<ArrowProps>().time = incTime;
                 tempUp.GetComponent<ArrowProps>().type = upType[0].ToString();
-                if (!Equals(upType[0].ToString(), "s"))
+                if (Equals(upType[0].ToString(), "l"))
                 {
                     tempUp.GetComponent<ArrowProps>().duration = (float)upDuration[0];
-                    tempUp.transform.localScale = new Vector3(1, 1.2f*(float)upDuration[0], 1);
-                    tempUp.transform.position = tempUp.transform.position + new Vector3(0, -0.6f*(float)upDuration[0], 0);
+                    Debug.Log(upDuration[0]);
+                    Debug.Log(tempUp.GetComponent<ArrowProps>().duration);
+                    tempUp.transform.localScale = new Vector3(1, 1.2f * (float)upDuration[0], 1);
+                    tempUp.transform.position = tempUp.transform.position + new Vector3(0, -0.6f * (float)upDuration[0], 0);
                     upDuration.RemoveAt(0);
+                }
+                else if (Equals(upType[0].ToString(), "m"))
+                {
+                    tempUp.GetComponent<ArrowProps>().duration = (float)upDuration[0];
+                    upDuration.RemoveAt(0);
+                }
+                else
+                {
+                    tempUp.transform.localScale = new Vector3(1, 0.02f, 1);
                 }
                 upArrows.Add(tempUp);
                 upTime.RemoveAt(0);
@@ -213,12 +233,21 @@ public class MainScript : MonoBehaviour
                 tempDown.AddComponent<ArrowProps>();
                 tempDown.GetComponent<ArrowProps>().time = incTime;
                 tempDown.GetComponent<ArrowProps>().type = downType[0].ToString();
-                if (!Equals(downType[0].ToString(), "s"))
+                if (Equals(downType[0].ToString(), "l"))
                 {
                     tempDown.GetComponent<ArrowProps>().duration = (float)downDuration[0];
                     tempDown.transform.localScale = new Vector3(1, 1.2f * (float)downDuration[0], 1);
                     tempDown.transform.position = tempDown.transform.position + new Vector3(0, -0.6f * (float)downDuration[0], 0);
                     downDuration.RemoveAt(0);
+                }
+                else if (Equals(downType[0].ToString(), "m"))
+                {
+                    tempDown.GetComponent<ArrowProps>().duration = (float)downDuration[0];
+                    downDuration.RemoveAt(0);
+                }
+                else
+                {
+                    tempDown.transform.localScale = new Vector3(1, 0.02f, 1);
                 }
                 downArrows.Add(tempDown);
                 downTime.RemoveAt(0);
@@ -237,12 +266,21 @@ public class MainScript : MonoBehaviour
                 tempRight.AddComponent<ArrowProps>();
                 tempRight.GetComponent<ArrowProps>().time = incTime;
                 tempRight.GetComponent<ArrowProps>().type = rightType[0].ToString();
-                if (!Equals(rightType[0].ToString(), "s"))
+                if (Equals(rightType[0].ToString(), "l"))
                 {
                     tempRight.GetComponent<ArrowProps>().duration = (float)rightDuration[0];
                     tempRight.transform.localScale = new Vector3(1, 1.2f * (float)rightDuration[0], 1);
                     tempRight.transform.position = tempRight.transform.position + new Vector3(0, -0.6f * (float)rightDuration[0]);
                     rightDuration.RemoveAt(0);
+                }
+                else if (Equals(rightType[0].ToString(), "m"))
+                {
+                    tempRight.GetComponent<ArrowProps>().duration = (float)rightDuration[0];
+                    rightDuration.RemoveAt(0);
+                }
+                else
+                {
+                    tempRight.transform.localScale = new Vector3(1, 0.02f, 1);
                 }
                 rightArrows.Add(tempRight);
                 rightTime.RemoveAt(0);
@@ -355,12 +393,13 @@ public class MainScript : MonoBehaviour
                 }
                 upMultiPressed += 1;
                 upMultiDown = true;
+                Debug.Log(currentUp.GetComponent<ArrowProps>().duration);
+                Debug.Log(upMultiPressed);
                 if (upMultiPressed == currentUp.GetComponent<ArrowProps>().duration)
                 {
                     float multiFinishTime = incTime;
                     determineMultiAccuracy(upDownTime, multiFinishTime, currentUp.GetComponent<ArrowProps>().time, currentUp.GetComponent<ArrowProps>().duration);
                     Object.Destroy(currentUp);
-
                     upArrows.RemoveAt(0);
                     upMultiDown = false;
                 }
@@ -510,6 +549,29 @@ public class MainScript : MonoBehaviour
                 rightArrows.RemoveAt(0);
             }
         }
+
+        //PAUSE THE GAME
+
+        if (Input.GetKey("escape"))
+        {
+            if (Time.timeScale == 1 && !escDown)
+            {
+                Time.timeScale = 0;
+                pauseScreen = GameObject.Instantiate(pause, new Vector3(0, 0, 0), Quaternion.identity);
+                escDown = true;
+            }
+            if (Time.timeScale == 0 && !escDown)
+            {
+                Object.Destroy(pauseScreen);
+                Time.timeScale = 1;
+                escDown = true;
+            }
+        }
+        if (!Input.GetKey("escape"))
+        {
+            escDown = false;
+        }
+
     }
 
     public void energyBarChanger(int change)
