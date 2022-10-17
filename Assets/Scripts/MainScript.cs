@@ -6,6 +6,10 @@ using System.Text.RegularExpressions;
 public class MainScript : MonoBehaviour
 {
 
+    public string difficulty;
+    public string level;
+    public int prevHighScore;
+
     public int score = 0;
     public int energyBar = 100;
     public bool gameOver = false;
@@ -71,10 +75,10 @@ public class MainScript : MonoBehaviour
 
     //HOW MANY TIMES A MULTI ARROW HAS BEEN PRESSED
 
-    float leftMultiPressed = 0;
-    float upMultiPressed = 0;
-    float downMultiPressed = 0;
-    float rightMultiPressed = 0;
+    float leftMultiPressed = 0.0f;
+    float upMultiPressed = 0.0f;
+    float downMultiPressed = 0.0f;
+    float rightMultiPressed = 0.0f;
 
     //THE START TIME OF THE MOST RECENT LONG PRESS OR MULTI PRESS
 
@@ -86,7 +90,11 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(PlayerPrefs.GetInt("Score"));
+        difficulty = PlayerPrefs.GetString("Difficulty");
+        level = PlayerPrefs.GetString("Level");
+
+        prevHighScore = PlayerPrefs.GetInt(difficulty + level);
+        Debug.Log("Your previous high score on level " + level + " at " + difficulty + " is " + prevHighScore);
         Application.targetFrameRate = 60;
 
         TextAsset input = Resources.Load("test") as TextAsset;
@@ -95,9 +103,7 @@ public class MainScript : MonoBehaviour
 
         for (int i = 0; i < lines.Length; i++)
         {
-            Debug.Log(lines[i]);
             string[] props = Regex.Split(lines[i], "-");
-            Debug.Log(props[0]);
             if (Equals(props[2],"L"))
             {
                 leftTime.Add(float.Parse(props[1]));
@@ -109,7 +115,6 @@ public class MainScript : MonoBehaviour
             }
             if (Equals(props[2], "U"))
             {
-                Debug.Log(props[1].Trim());
                 upTime.Add(float.Parse(props[1]));
                 upType.Add(props[0]);
                 if (!Equals(props[0], "s"))
@@ -152,7 +157,6 @@ public class MainScript : MonoBehaviour
             if ((float)leftTime[0] <= incTime)
             {
                 GameObject tempLeft = Instantiate(left, new Vector3(-3, -4, 0), Quaternion.identity);
-                tempLeft.AddComponent<UpMover>();
                 tempLeft.AddComponent<ArrowProps>();
                 tempLeft.GetComponent<ArrowProps>().time = incTime;
                 tempLeft.GetComponent<ArrowProps>().type = leftType[0].ToString();
@@ -182,7 +186,6 @@ public class MainScript : MonoBehaviour
             if ((float)upTime[0]  <= incTime)
             {
                 GameObject tempUp = Instantiate(up, new Vector3(-1, -4, 0), Quaternion.identity);
-                tempUp.AddComponent<UpMover>();
                 tempUp.AddComponent<ArrowProps>();
                 tempUp.GetComponent<ArrowProps>().time = incTime;
                 tempUp.GetComponent<ArrowProps>().type = upType[0].ToString();
@@ -207,7 +210,6 @@ public class MainScript : MonoBehaviour
             if ((float)downTime[0] <= incTime)
             {
                 GameObject tempDown = Instantiate(down, new Vector3(1, -4, 0), Quaternion.identity);
-                tempDown.AddComponent<UpMover>();
                 tempDown.AddComponent<ArrowProps>();
                 tempDown.GetComponent<ArrowProps>().time = incTime;
                 tempDown.GetComponent<ArrowProps>().type = downType[0].ToString();
@@ -232,7 +234,6 @@ public class MainScript : MonoBehaviour
             if ((float)rightTime[0] <= incTime)
             {
                 GameObject tempRight = Instantiate(right, new Vector3(3, -4, 0), Quaternion.identity);
-                tempRight.AddComponent<UpMover>();
                 tempRight.AddComponent<ArrowProps>();
                 tempRight.GetComponent<ArrowProps>().time = incTime;
                 tempRight.GetComponent<ArrowProps>().type = rightType[0].ToString();
@@ -254,7 +255,7 @@ public class MainScript : MonoBehaviour
 
         if (leftTime.Count == 0 && upTime.Count == 0 && downTime.Count == 0 && rightTime.Count == 0 && leftArrows.Count == 0 && upArrows.Count == 0 && downArrows.Count == 0 && rightArrows.Count == 0)
         {
-            PlayerPrefs.SetInt("Score", score);
+            PlayerPrefs.SetInt(difficulty + level, score);
             Debug.Log("You win! Your score is " + PlayerPrefs.GetInt("Score"));
         }
     }
@@ -367,15 +368,12 @@ public class MainScript : MonoBehaviour
             upDown = true;
         }
 
-        Debug.Log(upLongDown);
-
         if (!Input.GetKey("up"))
         {
             upDown = false;
             if (upLongDown)
             {
                 upLongDown = false;
-                Debug.Log("TIME " + currentUp.GetComponent<ArrowProps>().time);
                 determineLongAccuracy(upDownTime, incTime, currentUp.GetComponent<ArrowProps>().time, currentUp.GetComponent<ArrowProps>().duration);
                 Object.Destroy(currentUp);
                 upArrows.RemoveAt(0);
@@ -417,8 +415,6 @@ public class MainScript : MonoBehaviour
             }
             downDown = true;
         }
-
-        Debug.Log(downLongDown);
 
         if (!Input.GetKey("down"))
         {
@@ -467,8 +463,6 @@ public class MainScript : MonoBehaviour
             }
             rightDown = true;
         }
-
-        Debug.Log(rightLongDown);
 
         if (!Input.GetKey("right"))
         {
@@ -570,14 +564,6 @@ public class MainScript : MonoBehaviour
         float durationAccuracy = (float) (endTime - realStartTime) / duration;
         float startAccuracy = Mathf.Abs(startTime - realStartTime + 5);
 
-        Debug.Log("rst " + realStartTime);
-        Debug.Log("et " + endTime);
-        Debug.Log("st " + startTime);
-        Debug.Log("d " + duration);
-        Debug.Log("da " + durationAccuracy);
-        Debug.Log("sa " +startAccuracy);
-
-
         bool isAccurate = false;
         if (startAccuracy < 10 && (durationAccuracy < 1.1 || durationAccuracy > 0.9))
         {
@@ -603,21 +589,20 @@ public class MainScript : MonoBehaviour
     public void determineMultiAccuracy(float realStartTime, float endTime, float startTime, float duration)
     {
         float durationAccuracy = (float)(endTime - realStartTime) / duration;
-        float startAccuracy = Mathf.Abs(startTime - realStartTime + 300);
-        Debug.Log(durationAccuracy);
+        float startAccuracy = Mathf.Abs(startTime - realStartTime + 5);
 
         bool isAccurate = false;
-        if (startAccuracy < 10 && (durationAccuracy < 10))
+        if (startAccuracy < 10 && (durationAccuracy < 0.2))
         {
             score = score + 50;
             isAccurate = true;
         }
-        else if (startAccuracy < 20 && (durationAccuracy < 12))
+        else if (startAccuracy < 20 && (durationAccuracy < 0.3))
         {
             score = score + 40;
             isAccurate = true;
         }
-        else if (startAccuracy < 30 && (durationAccuracy < 15))
+        else if (startAccuracy < 30 && (durationAccuracy < 0.4))
         {
             score = score + 30;
             isAccurate = true;
