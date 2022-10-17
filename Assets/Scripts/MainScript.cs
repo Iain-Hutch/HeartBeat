@@ -293,8 +293,11 @@ public class MainScript : MonoBehaviour
 
         if (leftTime.Count == 0 && upTime.Count == 0 && downTime.Count == 0 && rightTime.Count == 0 && leftArrows.Count == 0 && upArrows.Count == 0 && downArrows.Count == 0 && rightArrows.Count == 0)
         {
-            PlayerPrefs.SetInt(difficulty + level, score);
-            Debug.Log("You win! Your score is " + PlayerPrefs.GetInt("Score"));
+            if (score > PlayerPrefs.GetInt(difficulty + level))
+            {
+                PlayerPrefs.SetInt(difficulty + level, score);
+            }
+            Debug.Log("You win! Your score is " + score);
         }
     }
 
@@ -327,10 +330,8 @@ public class MainScript : MonoBehaviour
         {
             if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "s"))
             {
-                if (determineAccuracy(currentLeft))
-                {
-                    leftArrows.RemoveAt(0);
-                }
+                determineAccuracy(currentLeft);
+                leftArrows.RemoveAt(0);
             }
             if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "l"))
             {
@@ -375,10 +376,8 @@ public class MainScript : MonoBehaviour
         {
             if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "s"))
             {
-                if (determineAccuracy(currentUp))
-                {
-                    upArrows.RemoveAt(0);
-                }
+                determineAccuracy(currentUp);
+                upArrows.RemoveAt(0);
             }
             if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "l"))
             {
@@ -425,10 +424,8 @@ public class MainScript : MonoBehaviour
         {
             if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "s"))
             {
-                if (determineAccuracy(currentDown))
-                {
-                    downArrows.RemoveAt(0);
-                }
+                determineAccuracy(currentDown);
+                downArrows.RemoveAt(0);
             }
             if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "l"))
             {
@@ -473,10 +470,8 @@ public class MainScript : MonoBehaviour
         {
             if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "s"))
             {
-                if (determineAccuracy(currentRight))
-                {
-                    rightArrows.RemoveAt(0);
-                }
+                determineAccuracy(currentRight);
+                rightArrows.RemoveAt(0);
             }
             if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "l"))
             {
@@ -593,24 +588,22 @@ public class MainScript : MonoBehaviour
         gameOver = true;
     }
 
-    bool determineAccuracy(GameObject arrow)
+    void determineAccuracy(GameObject arrow)
     {
         bool isAccurate = false;
         if (arrow.transform.position.y > 1.8 && arrow.transform.position.y < 2.2)
         {
-            Object.Destroy(arrow);
             score = score + 50;
             isAccurate = true;
+            Debug.Log(score);
         }
         else if (arrow.transform.position.y > 1.6 && arrow.transform.position.y < 2.4)
         {
-            Object.Destroy(arrow);
             score = score + 40;
             isAccurate = true;
         }
         else if (arrow.transform.position.y > 1.4 && arrow.transform.position.y < 2.6)
         {
-            Object.Destroy(arrow);
             score = score + 30;
             isAccurate = true;
         }
@@ -618,26 +611,27 @@ public class MainScript : MonoBehaviour
         {
             energyBarChanger(-20);
         }
-        return isAccurate;
+        Object.Destroy(arrow);
     }
 
     public void determineLongAccuracy(float realStartTime, float endTime, float startTime, float duration)
     {
         float durationAccuracy = (float) (endTime - realStartTime) / duration;
         float startAccuracy = Mathf.Abs(startTime - realStartTime + 5);
+        Debug.Log(durationAccuracy);
 
         bool isAccurate = false;
-        if (startAccuracy < 10 && (durationAccuracy < 1.1 || durationAccuracy > 0.9))
+        if (startAccuracy < 10 && (durationAccuracy < 1.1 && durationAccuracy > 0.9))
         {
             score = score + 50;
             isAccurate = true;
         }
-        else if (startAccuracy < 20 && (durationAccuracy < 1.2 || durationAccuracy > 0.8))
+        else if (startAccuracy < 20 && (durationAccuracy < 1.2 && durationAccuracy > 0.8))
         {
             score = score + 40;
             isAccurate = true;
         }
-        else if (startAccuracy < 30 && (durationAccuracy < 1.3 || durationAccuracy > 0.7))
+        else if (startAccuracy < 30 && (durationAccuracy < 1.3 && durationAccuracy > 0.7))
         {
             score = score + 30;
             isAccurate = true;

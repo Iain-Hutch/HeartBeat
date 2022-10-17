@@ -248,7 +248,7 @@ MonoBehaviour:
   up: {fileID: 1100040104248971895, guid: 10ecd84be6277d34485c73dbb827a7f3, type: 3}
   down: {fileID: 6204650995238403322, guid: a64bf42b5f795b742a630b5b0fac74e7, type: 3}
   right: {fileID: 1868910236406350413, guid: 87f00907b90cda74192c350ac8b876a1, type: 3}
-  pause: {fileID: 0}
+  pause: {fileID: 1886621176215024292, guid: ca11fb65565ddb44e916cc95c65cccdb, type: 3}
 --- !u!212 &294424017
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -806,6 +806,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1886621176215024297, guid: ca11fb65565ddb44e916cc95c65cccdb, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
     - target: {fileID: 1886621176215024297, guid: ca11fb65565ddb44e916cc95c65cccdb, type: 3}
       propertyPath: m_RenderMode
       value: 2
