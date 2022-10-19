@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class ButtonHandler : MonoBehaviour
 {
@@ -19,12 +21,12 @@ public class ButtonHandler : MonoBehaviour
 
     public void ToMainMenuScreen()
     {
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        SceneManager.LoadScene(6, LoadSceneMode.Single);
     }
 
     public void ToModeSelectScreen()
     {
-        SceneManager.LoadScene(2, LoadSceneMode.Single);
+        SceneManager.LoadScene(5, LoadSceneMode.Single);
     }
 
     public void ToTutorial()
@@ -34,11 +36,25 @@ public class ButtonHandler : MonoBehaviour
 
     public void ToLevelSelectScreen()
     {
-        SceneManager.LoadScene(3, LoadSceneMode.Single);
+        SceneManager.LoadScene(7, LoadSceneMode.Single);
     }
 
     public void ToMainGameScreen(string level)
     {
+        int diff = GameObject.Find("LevelDifficultyDropDown").GetComponent<TMP_Dropdown>().value;
+        if (diff == 0)
+        {
+            PlayerPrefs.SetString("Difficulty", "Easy");
+        }
+        if (diff == 1)
+        {
+            PlayerPrefs.SetString("Difficulty", "Medium");
+        }
+        if (diff == 2)
+        {
+            PlayerPrefs.SetString("Difficulty", "Hard");
+        }
+
         if (Equals(level, "1"))
         {
             PlayerPrefs.SetString("Level", "1");
@@ -51,7 +67,7 @@ public class ButtonHandler : MonoBehaviour
         {
             PlayerPrefs.SetString("Level", "3");
         }
-        SceneManager.LoadScene(0, LoadSceneMode.Single);
+        SceneManager.LoadScene(8, LoadSceneMode.Single);
     }
 
     public void SetDifficulty(string diff)

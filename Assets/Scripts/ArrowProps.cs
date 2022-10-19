@@ -9,6 +9,7 @@ public class ArrowProps : MonoBehaviour
     public float duration;
     public string type;
     public float time;
+    public string direction;
 
     public bool stopping = false;
     public float stopTime;
@@ -24,16 +25,35 @@ public class ArrowProps : MonoBehaviour
     {
         if (!main_script.gameOver && !stopping)
         {
-            transform.Translate(0, 1.2f * Time.deltaTime, 0);
+            transform.Translate(0, -100f * Time.deltaTime, 0);
         }
-        if ((main_script.incTime - time > 5) && Equals(type, "m"))
-        {
-            stopping = true;
-            stopTime = main_script.incTime;
+        if ((main_script.incTime - time) > 5.5f) {
+            Object.Destroy(this);
+            if (Equals(direction, "L"))
+            {
+                main_script.leftArrows.RemoveAt(0);
+            }
+            if (Equals(direction, "U"))
+            {
+                main_script.upArrows.RemoveAt(0);
+            }
+            if (Equals(direction, "D"))
+            {
+                main_script.downArrows.RemoveAt(0);
+            }
+            if (Equals(direction, "R"))
+            {
+                main_script.rightArrows.RemoveAt(0);
+            }
         }
-        if ((main_script.incTime - stopTime) > duration * 0.05)
-        {
-            stopping = false;
-        }
+        //if ((main_script.incTime - time > 500) && Equals(type, "m"))
+        //{
+        //    stopping = true;
+        //    stopTime = main_script.incTime;
+        //}
+        //if ((main_script.incTime - stopTime) > duration * 0.05)
+        //{
+        //    stopping = false;
+        //}
     }
 }

@@ -160,15 +160,16 @@ public class MainScript : MonoBehaviour
         {
             if ((float)leftTime[0] <= incTime)
             {
-                GameObject tempLeft = Instantiate(left, new Vector3(-3, -4, 0), Quaternion.identity);
+                GameObject tempLeft = Instantiate(left, new Vector3(-145, 100, -1), Quaternion.identity);
                 tempLeft.AddComponent<ArrowProps>();
                 tempLeft.GetComponent<ArrowProps>().time = incTime;
+                tempLeft.GetComponent<ArrowProps>().direction = "L";
                 tempLeft.GetComponent<ArrowProps>().type = leftType[0].ToString();
                 if (Equals(leftType[0].ToString(), "l"))
                 {
                     tempLeft.GetComponent<ArrowProps>().duration = (float)leftDuration[0];
-                    tempLeft.transform.localScale = new Vector3(1, 1.2f*(float)leftDuration[0], 1);
-                    tempLeft.transform.position = tempLeft.transform.position + new Vector3(0, -0.6f * (float)leftDuration[0], 0);
+                    //tempLeft.transform.localScale = new Vector3(1, 1.2f*(float)leftDuration[0], 1);
+                    //tempLeft.transform.position = tempLeft.transform.position + new Vector3(0, -0.6f * (float)leftDuration[0], 0);
                     leftDuration.RemoveAt(0);
                 }
                 else if (Equals(leftType[0].ToString(), "m"))
@@ -176,10 +177,10 @@ public class MainScript : MonoBehaviour
                     tempLeft.GetComponent<ArrowProps>().duration = (float)leftDuration[0];
                     leftDuration.RemoveAt(0);
                 }
-                else
-                {
-                    tempLeft.transform.localScale = new Vector3(1, 0.02f, 1);
-                }
+                //else
+                //{
+                //    //tempLeft.transform.localScale = new Vector3(1, 0.02f, 1);
+                //}
                 
                 leftArrows.Add(tempLeft);
                 leftTime.RemoveAt(0);
@@ -194,17 +195,17 @@ public class MainScript : MonoBehaviour
         {
             if ((float)upTime[0]  <= incTime)
             {
-                GameObject tempUp = Instantiate(up, new Vector3(-1, -4, 0), Quaternion.identity);
+                GameObject tempUp = Instantiate(up, new Vector3(-45, 100, -1), Quaternion.identity);
                 tempUp.AddComponent<ArrowProps>();
+                tempUp.GetComponent<ArrowProps>().direction = "U";
                 tempUp.GetComponent<ArrowProps>().time = incTime;
                 tempUp.GetComponent<ArrowProps>().type = upType[0].ToString();
                 if (Equals(upType[0].ToString(), "l"))
                 {
                     tempUp.GetComponent<ArrowProps>().duration = (float)upDuration[0];
                     Debug.Log(upDuration[0]);
-                    Debug.Log(tempUp.GetComponent<ArrowProps>().duration);
-                    tempUp.transform.localScale = new Vector3(1, 1.2f * (float)upDuration[0], 1);
-                    tempUp.transform.position = tempUp.transform.position + new Vector3(0, -0.6f * (float)upDuration[0], 0);
+                    //tempUp.transform.localScale = new Vector3(1, 1.2f * (float)upDuration[0], 1);
+                    //tempUp.transform.position = tempUp.transform.position + new Vector3(0, -0.6f * (float)upDuration[0], 0);
                     upDuration.RemoveAt(0);
                 }
                 else if (Equals(upType[0].ToString(), "m"))
@@ -212,10 +213,10 @@ public class MainScript : MonoBehaviour
                     tempUp.GetComponent<ArrowProps>().duration = (float)upDuration[0];
                     upDuration.RemoveAt(0);
                 }
-                else
-                {
-                    tempUp.transform.localScale = new Vector3(1, 0.02f, 1);
-                }
+                //else
+                //{
+                //    //tempUp.transform.localScale = new Vector3(1, 0.02f, 1);
+                //}
                 upArrows.Add(tempUp);
                 upTime.RemoveAt(0);
                 upType.RemoveAt(0);
@@ -229,15 +230,16 @@ public class MainScript : MonoBehaviour
         {
             if ((float)downTime[0] <= incTime)
             {
-                GameObject tempDown = Instantiate(down, new Vector3(1, -4, 0), Quaternion.identity);
+                GameObject tempDown = Instantiate(down, new Vector3(50, 100, -1), Quaternion.identity);
                 tempDown.AddComponent<ArrowProps>();
                 tempDown.GetComponent<ArrowProps>().time = incTime;
+                tempDown.GetComponent<ArrowProps>().direction = "D";
                 tempDown.GetComponent<ArrowProps>().type = downType[0].ToString();
                 if (Equals(downType[0].ToString(), "l"))
                 {
                     tempDown.GetComponent<ArrowProps>().duration = (float)downDuration[0];
-                    tempDown.transform.localScale = new Vector3(1, 1.2f * (float)downDuration[0], 1);
-                    tempDown.transform.position = tempDown.transform.position + new Vector3(0, -0.6f * (float)downDuration[0], 0);
+                    //tempDown.transform.localScale = new Vector3(1, 1.2f * (float)downDuration[0], 1);
+                    //tempDown.transform.position = tempDown.transform.position + new Vector3(0, -0.6f * (float)downDuration[0], 0);
                     downDuration.RemoveAt(0);
                 }
                 else if (Equals(downType[0].ToString(), "m"))
@@ -245,10 +247,10 @@ public class MainScript : MonoBehaviour
                     tempDown.GetComponent<ArrowProps>().duration = (float)downDuration[0];
                     downDuration.RemoveAt(0);
                 }
-                else
-                {
-                    tempDown.transform.localScale = new Vector3(1, 0.02f, 1);
-                }
+                //else
+                //{
+                //    //tempDown.transform.localScale = new Vector3(1, 0.02f, 1);
+                //}
                 downArrows.Add(tempDown);
                 downTime.RemoveAt(0);
                 downType.RemoveAt(0);
@@ -262,15 +264,16 @@ public class MainScript : MonoBehaviour
         {
             if ((float)rightTime[0] <= incTime)
             {
-                GameObject tempRight = Instantiate(right, new Vector3(3, -4, 0), Quaternion.identity);
+                GameObject tempRight = Instantiate(right, new Vector3(140, 100, -1), Quaternion.identity);
                 tempRight.AddComponent<ArrowProps>();
                 tempRight.GetComponent<ArrowProps>().time = incTime;
+                tempRight.GetComponent<ArrowProps>().direction = "R";
                 tempRight.GetComponent<ArrowProps>().type = rightType[0].ToString();
                 if (Equals(rightType[0].ToString(), "l"))
                 {
                     tempRight.GetComponent<ArrowProps>().duration = (float)rightDuration[0];
-                    tempRight.transform.localScale = new Vector3(1, 1.2f * (float)rightDuration[0], 1);
-                    tempRight.transform.position = tempRight.transform.position + new Vector3(0, -0.6f * (float)rightDuration[0]);
+                    //tempRight.transform.localScale = new Vector3(1, 1.2f * (float)rightDuration[0], 1);
+                    //tempRight.transform.position = tempRight.transform.position + new Vector3(0, -0.6f * (float)rightDuration[0]);
                     rightDuration.RemoveAt(0);
                 }
                 else if (Equals(rightType[0].ToString(), "m"))
@@ -278,10 +281,10 @@ public class MainScript : MonoBehaviour
                     tempRight.GetComponent<ArrowProps>().duration = (float)rightDuration[0];
                     rightDuration.RemoveAt(0);
                 }
-                else
-                {
-                    tempRight.transform.localScale = new Vector3(1, 0.02f, 1);
-                }
+                //else
+                //{
+                //    //tempRight.transform.localScale = new Vector3(1, 0.02f, 1);
+                //}
                 rightArrows.Add(tempRight);
                 rightTime.RemoveAt(0);
                 rightType.RemoveAt(0);
@@ -297,7 +300,12 @@ public class MainScript : MonoBehaviour
             {
                 PlayerPrefs.SetInt(difficulty + level, score);
             }
-            Debug.Log("You win! Your score is " + score);
+            if (!gameOver)
+            {
+                Debug.Log("You win! Your score is " + score);
+            }
+            Time.timeScale = 0;
+            gameOver = true;
         }
     }
 
@@ -330,6 +338,7 @@ public class MainScript : MonoBehaviour
         {
             if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "s"))
             {
+                Debug.Log(currentLeft.transform.position.y);
                 determineAccuracy(currentLeft);
                 leftArrows.RemoveAt(0);
             }
@@ -470,6 +479,7 @@ public class MainScript : MonoBehaviour
         {
             if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "s"))
             {
+                Debug.Log(currentRight.transform.position.y);
                 determineAccuracy(currentRight);
                 rightArrows.RemoveAt(0);
             }
@@ -514,7 +524,7 @@ public class MainScript : MonoBehaviour
 
         if (currentLeft != null)
         {
-            if (currentLeft.transform.position.y > 4)
+            if (currentLeft.transform.position.y < -250)
             {
                 Object.Destroy(currentLeft);
                 leftArrows.RemoveAt(0);
@@ -522,7 +532,7 @@ public class MainScript : MonoBehaviour
         }
         if (currentUp != null)
         {
-            if (currentUp.transform.position.y > 4)
+            if (currentUp.transform.position.y < -250)
             {
                 Object.Destroy(currentUp);
                 upArrows.RemoveAt(0);
@@ -530,7 +540,7 @@ public class MainScript : MonoBehaviour
         }
         if (currentDown != null)
         {
-            if (currentDown.transform.position.y > 4)
+            if (currentDown.transform.position.y < -250)
             {
                 Object.Destroy(currentDown);
                 downArrows.RemoveAt(0);
@@ -538,7 +548,7 @@ public class MainScript : MonoBehaviour
         }
         if (currentRight != null)
         {
-            if (currentRight.transform.position.y > 4)
+            if (currentRight.transform.position.y < -250)
             {
                 Object.Destroy(currentRight);
                 rightArrows.RemoveAt(0);
@@ -591,25 +601,27 @@ public class MainScript : MonoBehaviour
     void determineAccuracy(GameObject arrow)
     {
         bool isAccurate = false;
-        if (arrow.transform.position.y > 1.8 && arrow.transform.position.y < 2.2)
+        if (arrow.transform.position.y > -185 && arrow.transform.position.y < -165)
         {
             score = score + 50;
             isAccurate = true;
-            Debug.Log(score);
+            energyBarChanger(3);
         }
-        else if (arrow.transform.position.y > 1.6 && arrow.transform.position.y < 2.4)
+        else if (arrow.transform.position.y > -200 && arrow.transform.position.y < -150)
         {
             score = score + 40;
             isAccurate = true;
+            energyBarChanger(2);
         }
-        else if (arrow.transform.position.y > 1.4 && arrow.transform.position.y < 2.6)
+        else if (arrow.transform.position.y > -215 && arrow.transform.position.y < -135)
         {
             score = score + 30;
             isAccurate = true;
+            energyBarChanger(1);
         }
         if (!isAccurate)
         {
-            energyBarChanger(-20);
+            energyBarChanger(-5);
         }
         Object.Destroy(arrow);
     }
@@ -617,28 +629,31 @@ public class MainScript : MonoBehaviour
     public void determineLongAccuracy(float realStartTime, float endTime, float startTime, float duration)
     {
         float durationAccuracy = (float) (endTime - realStartTime) / duration;
-        float startAccuracy = Mathf.Abs(startTime - realStartTime + 5);
-        Debug.Log(durationAccuracy);
+        float startAccuracy = Mathf.Abs(startTime - realStartTime) + 2.75f;
+        Debug.Log(startAccuracy);
 
         bool isAccurate = false;
-        if (startAccuracy < 10 && (durationAccuracy < 1.1 && durationAccuracy > 0.9))
+        if (startAccuracy < 0.2 && (durationAccuracy < 1.1 && durationAccuracy > 0.9))
         {
             score = score + 50;
             isAccurate = true;
+            energyBarChanger(5);
         }
-        else if (startAccuracy < 20 && (durationAccuracy < 1.2 && durationAccuracy > 0.8))
+        else if (startAccuracy < 0.3 && (durationAccuracy < 1.2 && durationAccuracy > 0.8))
         {
             score = score + 40;
             isAccurate = true;
+            energyBarChanger(4);
         }
-        else if (startAccuracy < 30 && (durationAccuracy < 1.3 && durationAccuracy > 0.7))
+        else if (startAccuracy < 0.4 && (durationAccuracy < 1.3 && durationAccuracy > 0.7))
         {
             score = score + 30;
             isAccurate = true;
+            energyBarChanger(2);
         }
         if (!isAccurate)
         {
-            energyBarChanger(-20);
+            energyBarChanger(-3);
         }
     }
 
@@ -646,7 +661,7 @@ public class MainScript : MonoBehaviour
     {
         float durationAccuracy = (float)(endTime - realStartTime) / duration;
         float startAccuracy = Mathf.Abs(startTime - realStartTime + 5);
-
+    
         bool isAccurate = false;
         if (startAccuracy < 10 && (durationAccuracy < 0.2))
         {
