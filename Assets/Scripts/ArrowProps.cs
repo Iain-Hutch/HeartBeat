@@ -27,7 +27,7 @@ public class ArrowProps : MonoBehaviour
         {
             transform.Translate(0, -100f * Time.deltaTime, 0);
         }
-        if ((main_script.incTime - time) > 5.5f) {
+        if ((main_script.incTime - time) > 10f) {
             Object.Destroy(this);
             if (Equals(direction, "L"))
             {

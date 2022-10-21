@@ -21,12 +21,12 @@ public class ButtonHandler : MonoBehaviour
 
     public void ToMainMenuScreen()
     {
-        SceneManager.LoadScene(6, LoadSceneMode.Single);
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
     public void ToModeSelectScreen()
     {
-        SceneManager.LoadScene(5, LoadSceneMode.Single);
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
     public void ToTutorial()
@@ -34,9 +34,17 @@ public class ButtonHandler : MonoBehaviour
         Debug.Log("Going to Tutorial!");
     }
 
-    public void ToLevelSelectScreen()
+    public void ToLevelSelectScreen(string mode)
     {
-        SceneManager.LoadScene(7, LoadSceneMode.Single);
+        if (Equals(mode, "free"))
+        {
+            PlayerPrefs.SetString("Mode", "free");
+        }
+        if (Equals(mode, "story"))
+        {
+            PlayerPrefs.SetString("Mode", "story");
+        }
+        SceneManager.LoadScene(2, LoadSceneMode.Single);
     }
 
     public void ToMainGameScreen(string level)
@@ -67,17 +75,34 @@ public class ButtonHandler : MonoBehaviour
         {
             PlayerPrefs.SetString("Level", "3");
         }
-        SceneManager.LoadScene(8, LoadSceneMode.Single);
+        if (Equals(PlayerPrefs.GetString("Mode"), "free"))
+        {
+            SceneManager.LoadScene(3, LoadSceneMode.Single);
+        }
+        else if (Equals(PlayerPrefs.GetString("Mode"), "story"))
+        {
+            if (Equals(level, "1"))
+            {
+                SceneManager.LoadScene(5, LoadSceneMode.Single);
+            }
+            if (Equals(level, "2"))
+            {
+                SceneManager.LoadScene(6, LoadSceneMode.Single);
+            }
+            if (Equals(level, "3"))
+            {
+                SceneManager.LoadScene(7, LoadSceneMode.Single);
+            }
+        }
+    }
+
+    public void ToHighScores()
+    {
+        SceneManager.LoadScene(4, LoadSceneMode.Single);
     }
 
     public void SetDifficulty(string diff)
     {
         PlayerPrefs.SetString("Difficulty", diff);
-    }
-
-    public void unpause()
-    {
-        string prevScreen = PlayerPrefs.GetString("PreviousScreenPaused");
-
     }
 }

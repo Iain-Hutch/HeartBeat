@@ -6,27 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainGameScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/Old Scenes/_MainMenu.unity
-    guid: efa3413e71690a8448af44952fa86a60
-  - enabled: 1
-    path: Assets/Scenes/Old Scenes/ModeSelectMenu.unity
-    guid: b7d50ae493be9064c9826929b87959aa
-  - enabled: 1
-    path: Assets/Scenes/Old Scenes/LevelSelectMenu.unity
-    guid: 5c0623464be599a49be0f9b24e84cabd
-  - enabled: 1
-    path: Assets/Scenes/HighScores.unity
-    guid: 94d7fb7c54a8d074f9f28fd333add0a6
+    path: Assets/Scenes/StartScene.unity
+    guid: 0bd5a6f7905346f46b7469405d54322d
   - enabled: 1
     path: Assets/Scenes/ChooseModeScene.unity
     guid: b288b7e4dbde09c41bec04cf5f50f5ea
   - enabled: 1
-    path: Assets/Scenes/StartScene.unity
-    guid: 0bd5a6f7905346f46b7469405d54322d
-  - enabled: 1
     path: Assets/Scenes/ChooseLevelScene.unity
     guid: 0dd6933d2b2945349b871d542b700506
+  - enabled: 1
+    path: Assets/Scenes/LevelScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/HighscoreScene.unity
+    guid: cf55d726da1b83e4397b79292c7767de
+  - enabled: 1
+    path: Assets/Scenes/Splash1/Splash1.unity
+    guid: f76342ece365bca4390e2d8ce2c7be1b
+  - enabled: 1
+    path: Assets/Scenes/Splash2.unity
+    guid: 25a0bf615e96c174b9d4ad14a81ad029
+  - enabled: 1
+    path: Assets/Scenes/Splash3.unity
+    guid: f88ca47f70f327640aee169ca30f6dce
   m_configObjects: {}

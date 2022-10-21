@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HighScoresPopulator : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class HighScoresPopulator : MonoBehaviour
         int mediumThree = PlayerPrefs.GetInt("Medium3");
         int hardThree = PlayerPrefs.GetInt("Hard3");
 
-        Text text = GameObject.Find("highScoresText").GetComponent<Text>();
+        TMP_Text text = GameObject.Find("highScoresText").GetComponent<TMP_Text>();
         text.text = easyOne + "\n" + mediumOne + "\n" + hardOne + "\n\n" + easyTwo + "\n" + mediumTwo + "\n" + hardTwo + "\n\n" + easyThree + "\n" + mediumThree + "\n" + hardThree;
     }
 
