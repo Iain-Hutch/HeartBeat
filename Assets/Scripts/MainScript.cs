@@ -240,6 +240,7 @@ public class MainScript : MonoBehaviour
                     upLongBodyInstance.AddComponent<DownMover>();
 
                     upLongHeadInstance = Instantiate(upLongHead, new Vector3(-45, 141 + 90.3f * (float)upDuration[0], 0), Quaternion.identity);
+                    upLongHeadInstance.transform.localScale = new Vector3(38f, 38f, 1);
                     upLongHeadInstance.AddComponent<DownMover>();
                     upDuration.RemoveAt(0);
                 }
@@ -279,6 +280,7 @@ public class MainScript : MonoBehaviour
                     downLongBodyInstance.AddComponent<DownMover>();
 
                     downLongHeadInstance = Instantiate(downLongHead, new Vector3(50, 127 + 100f * (float)downDuration[0], 0), Quaternion.identity);
+                    downLongHeadInstance.transform.localScale = new Vector3(38f, 38f, 1);
                     downLongHeadInstance.AddComponent<DownMover>();
 
                     downDuration.RemoveAt(0);
