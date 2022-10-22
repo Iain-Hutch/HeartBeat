@@ -115,6 +115,15 @@ public class MainScript : MonoBehaviour
     float downDownTime = 0;
     float rightDownTime = 0;
 
+    // I - AUDIO PLAYERS
+
+    [SerializeField] private PlaySoundQuick backings = null;
+    [SerializeField] private PlaySoundQuick guitar = null;
+    [SerializeField] private PlaySoundQuick wrong_note = null;
+
+    private AudioSource guitarPlayer = null;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -125,7 +134,11 @@ public class MainScript : MonoBehaviour
         Debug.Log("Your previous high score on level " + level + " at " + difficulty + " is " + prevHighScore);
         Application.targetFrameRate = 60;
 
-        TextAsset input = Resources.Load("test") as TextAsset;
+        // I - testing purposes
+        difficulty = "Hard";
+        level = "2";
+
+        TextAsset input = Resources.Load(level+"-"+difficulty) as TextAsset;
         string inputText = input.text;
         string[] lines = Regex.Split(inputText, "\r\n");
 
@@ -169,6 +182,21 @@ public class MainScript : MonoBehaviour
                 }
             }
         }
+
+        // I - Get the guitar's audiosource
+        guitarPlayer = guitar.GetComponent<AudioSource>();
+
+        // I - set the correct clips for the audio players
+        AudioClip b_sound = Resources.Load(level + "-b") as AudioClip;
+        AudioClip g_sound = Resources.Load(level + "-g") as AudioClip;
+
+        // I - set each audio track to the correct player
+        backings.SetClip(b_sound);
+        guitar.SetClip(g_sound);
+
+        // I - start the audio tracks
+        backings.Play();
+        guitar.Play();
     }
 
     // Update is called once per frame
@@ -677,6 +705,16 @@ public class MainScript : MonoBehaviour
         if (!isAccurate)
         {
             energyBarChanger(-5);
+            // I - mute the guitar's audio on incorrect note
+            guitarPlayer.mute = true;
+            // I - play an audio indicator
+            wrong_note.PlayFromListRandom();
+        }
+        // I - restore guitar audio on correct note
+        else
+        {
+            if (guitarPlayer.mute)
+                guitarPlayer.mute = false;
         }
         Object.Destroy(arrow);
     }
@@ -710,6 +748,16 @@ public class MainScript : MonoBehaviour
         if (!isAccurate)
         {
             energyBarChanger(-3);
+            // I - mute the guitar's audio on incorrect note
+            guitarPlayer.mute = true;
+            // I - play an audio indicator
+            wrong_note.PlayFromListRandom();
+        }
+        // I - restore guitar audio on correct note
+        else
+        {
+            if (guitarPlayer.mute)
+                guitarPlayer.mute = false;
         }
     }
 
