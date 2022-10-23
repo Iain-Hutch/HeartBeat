@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using UnityEngine.SceneManagement;
 
 public class MainScript : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class MainScript : MonoBehaviour
     public bool gameOver = false;
 
     public float incTime;
+    public float endTime;
 
     public GameObject left;
     public GameObject up;
@@ -136,7 +138,7 @@ public class MainScript : MonoBehaviour
 
         // I - testing purposes
         difficulty = "Hard";
-        level = "2";
+        level = "3";
 
         TextAsset input = Resources.Load(level+"-"+difficulty) as TextAsset;
         string inputText = input.text;
@@ -381,10 +383,36 @@ public class MainScript : MonoBehaviour
             if (!gameOver)
             {
                 Debug.Log("You win! Your score is " + score);
+                endTime = incTime;
             }
-            Time.timeScale = 0;
             gameOver = true;
         }
+
+        if (incTime > endTime + 2 && gameOver)
+        {
+            if (PlayerPrefs.GetString("Mode") == "story")
+            {
+                if (level == "1")
+                {
+                    SceneManager.LoadScene(6, LoadSceneMode.Single);
+                    PlayerPrefs.SetString("Level", "2");
+                }
+                if (level == "2")
+                {
+                    SceneManager.LoadScene(7, LoadSceneMode.Single);
+                    PlayerPrefs.SetString("Level", "3");
+                }
+                if (level == "3")
+                {
+                    SceneManager.LoadScene(9, LoadSceneMode.Single);
+                }
+            }
+            if (PlayerPrefs.GetString("Mode") == "free")
+            {
+
+            }
+        }
+
     }
 
     void OnGUI()
@@ -411,12 +439,11 @@ public class MainScript : MonoBehaviour
         }
 
         //LEFT KEYPRESS HANDLER
-
-        if (Input.GetKey("left") && leftArrows.Count > 0)
+        // I - added alt keypress
+        if ((Input.GetKey("left") || Input.GetKey("s")) && leftArrows.Count > 0)
         {
             if (!leftDown && Equals(currentLeft.GetComponent<ArrowProps>().type, "s"))
             {
-                Debug.Log(currentLeft.transform.position.y);
                 determineAccuracy(currentLeft);
                 leftArrows.RemoveAt(0);
             }
@@ -437,7 +464,7 @@ public class MainScript : MonoBehaviour
                 {
                     float multiFinishTime = incTime;
                     determineMultiAccuracy(leftDownTime, multiFinishTime, currentLeft.GetComponent<ArrowProps>().time, currentLeft.GetComponent<ArrowProps>().duration);
-                    Object.Destroy(currentLeft);
+                    Object.Destroy(currentLeft.gameObject);
                     leftArrows.RemoveAt(0);
                     leftMultiDown = false;
                 }
@@ -445,21 +472,24 @@ public class MainScript : MonoBehaviour
             leftDown = true;
         }
 
-        if (!Input.GetKey("left"))
+        // I - added alt keypress
+        if (!(Input.GetKey("left") || Input.GetKey("s")))
         {
             leftDown = false;
             if (leftLongDown)
             {
                 leftLongDown = false;
                 determineLongAccuracy(leftDownTime, incTime, currentLeft.GetComponent<ArrowProps>().time, currentLeft.GetComponent<ArrowProps>().duration);
-                Object.Destroy(currentLeft);
+                Object.Destroy(currentLeft.gameObject);
+                Object.Destroy(leftLongBodyInstance.gameObject);
+                Object.Destroy(leftLongHeadInstance.gameObject);
                 leftArrows.RemoveAt(0);
             }
         }
 
         //UP KEYPRESS HANDLER
 
-        if (Input.GetKey("up") && upArrows.Count > 0)
+        if ((Input.GetKey("up") || Input.GetKey("d")) && upArrows.Count > 0)
         {
             if (!upDown && Equals(currentUp.GetComponent<ArrowProps>().type, "s"))
             {
@@ -479,13 +509,13 @@ public class MainScript : MonoBehaviour
                 }
                 upMultiPressed += 1;
                 upMultiDown = true;
-                Debug.Log(currentUp.GetComponent<ArrowProps>().duration);
-                Debug.Log(upMultiPressed);
                 if (upMultiPressed == currentUp.GetComponent<ArrowProps>().duration)
                 {
                     float multiFinishTime = incTime;
                     determineMultiAccuracy(upDownTime, multiFinishTime, currentUp.GetComponent<ArrowProps>().time, currentUp.GetComponent<ArrowProps>().duration);
-                    Object.Destroy(currentUp);
+                    Object.Destroy(currentUp.gameObject);
+                    Object.Destroy(upLongBodyInstance.gameObject);
+                    Object.Destroy(upLongHeadInstance.gameObject);
                     upArrows.RemoveAt(0);
                     upMultiDown = false;
                 }
@@ -493,21 +523,21 @@ public class MainScript : MonoBehaviour
             upDown = true;
         }
 
-        if (!Input.GetKey("up"))
+        if (!(Input.GetKey("up") || Input.GetKey("d")))
         {
             upDown = false;
             if (upLongDown)
             {
                 upLongDown = false;
                 determineLongAccuracy(upDownTime, incTime, currentUp.GetComponent<ArrowProps>().time, currentUp.GetComponent<ArrowProps>().duration);
-                Object.Destroy(currentUp);
+                Object.Destroy(currentUp.gameObject);
                 upArrows.RemoveAt(0);
             }
         }
 
         //DOWN KEYPRESS HANDLER
 
-        if (Input.GetKey("down") && downArrows.Count > 0)
+        if ((Input.GetKey("down") || Input.GetKey("k")) && downArrows.Count > 0)
         {
             if (!downDown && Equals(currentDown.GetComponent<ArrowProps>().type, "s"))
             {
@@ -531,7 +561,7 @@ public class MainScript : MonoBehaviour
                 {
                     float multiFinishTime = incTime;
                     determineMultiAccuracy(downDownTime, multiFinishTime, currentDown.GetComponent<ArrowProps>().time, currentDown.GetComponent<ArrowProps>().duration);
-                    Object.Destroy(currentDown);
+                    Object.Destroy(currentDown.gameObject);
                     downArrows.RemoveAt(0);
                     downMultiDown = false;
                 }
@@ -539,27 +569,26 @@ public class MainScript : MonoBehaviour
             downDown = true;
         }
 
-        if (!Input.GetKey("down"))
+        if (!(Input.GetKey("down") || Input.GetKey("k")))
         {
             downDown = false;
             if (downLongDown)
             {
                 downLongDown = false;
                 determineLongAccuracy(downDownTime, incTime, currentDown.GetComponent<ArrowProps>().time, currentDown.GetComponent<ArrowProps>().duration);
-                Object.Destroy(currentDown);
-                Object.Destroy(downLongBodyInstance);
-                Object.Destroy(downLongHeadInstance);
+                Object.Destroy(currentDown.gameObject);
+                Object.Destroy(downLongBodyInstance.gameObject);
+                Object.Destroy(downLongHeadInstance.gameObject);
                 downArrows.RemoveAt(0);
             }
         }
 
         //RIGHT KEYPRESS HANDLER
 
-        if (Input.GetKey("right") && rightArrows.Count > 0)
+        if ((Input.GetKey("right") || Input.GetKey("l")) && rightArrows.Count > 0)
         {
             if (!rightDown && Equals(currentRight.GetComponent<ArrowProps>().type, "s"))
             {
-                Debug.Log(currentRight.transform.position.y);
                 determineAccuracy(currentRight);
                 rightArrows.RemoveAt(0);
             }
@@ -580,7 +609,9 @@ public class MainScript : MonoBehaviour
                 {
                     float multiFinishTime = incTime;
                     determineMultiAccuracy(rightDownTime, multiFinishTime, currentRight.GetComponent<ArrowProps>().time, currentRight.GetComponent<ArrowProps>().duration);
-                    Object.Destroy(currentRight);
+                    Object.Destroy(currentRight.gameObject);
+                    Object.Destroy(rightLongBodyInstance.gameObject);
+                    Object.Destroy(rightLongHeadInstance.gameObject);
                     rightArrows.RemoveAt(0);
                     rightMultiDown = false;
                 }
@@ -588,7 +619,7 @@ public class MainScript : MonoBehaviour
             rightDown = true;
         }
 
-        if (!Input.GetKey("right"))
+        if (!(Input.GetKey("right") || Input.GetKey("l")))
         {
             rightDown = false;
             if (rightLongDown)
@@ -602,40 +633,6 @@ public class MainScript : MonoBehaviour
 
         //DELETE ARROWS OVER 3
 
-        if (currentLeft != null)
-        {
-            if (currentLeft.transform.position.y < -550)
-            {
-                Object.Destroy(currentLeft);
-                leftArrows.RemoveAt(0);
-            }
-        }
-        if (currentUp != null)
-        {
-            if (currentUp.transform.position.y < -550)
-            {
-                Object.Destroy(currentUp);
-                upArrows.RemoveAt(0);
-            }
-        }
-        if (currentDown != null)
-        {
-            if (currentDown.transform.position.y < -550)
-            {
-                Object.Destroy(currentDown);
-                Object.Destroy(downLongBodyInstance);
-                Object.Destroy(downLongHeadInstance);
-                downArrows.RemoveAt(0);
-            }
-        }
-        if (currentRight != null)
-        {
-            if (currentRight.transform.position.y < -550)
-            {
-                Object.Destroy(currentRight);
-                rightArrows.RemoveAt(0);
-            }
-        }
 
         //PAUSE THE GAME
 
@@ -649,7 +646,7 @@ public class MainScript : MonoBehaviour
             }
             if (Time.timeScale == 0 && !escDown)
             {
-                Object.Destroy(pauseScreen);
+                Object.Destroy(pauseScreen.gameObject);
                 Time.timeScale = 1;
                 escDown = true;
             }
@@ -678,11 +675,11 @@ public class MainScript : MonoBehaviour
     {
         Debug.Log("You Lose :(");
         gameOver = true;
+        SceneManager.LoadScene(8, LoadSceneMode.Single);
     }
 
     void determineAccuracy(GameObject arrow)
     {
-        Debug.Log(incTime);
         bool isAccurate = false;
         if (arrow.transform.position.y > -185 && arrow.transform.position.y < -165)
         {
@@ -716,15 +713,13 @@ public class MainScript : MonoBehaviour
             if (guitarPlayer.mute)
                 guitarPlayer.mute = false;
         }
-        Object.Destroy(arrow);
+        Object.Destroy(arrow.gameObject);
     }
 
     public void determineLongAccuracy(float realStartTime, float endTime, float startTime, float duration)
     {
         float durationAccuracy = (float) (endTime - realStartTime) / duration;
-        float startAccuracy = Mathf.Abs(startTime - realStartTime) + 3f;
-        Debug.Log(startAccuracy);
-        Debug.Log(durationAccuracy);
+        float startAccuracy = Mathf.Abs(startTime - realStartTime) - 3f;
 
         bool isAccurate = false;
         if (startAccuracy < 0.2 && (durationAccuracy < 1.1 && durationAccuracy > 0.9))
@@ -748,10 +743,6 @@ public class MainScript : MonoBehaviour
         if (!isAccurate)
         {
             energyBarChanger(-3);
-            // I - mute the guitar's audio on incorrect note
-            guitarPlayer.mute = true;
-            // I - play an audio indicator
-            wrong_note.PlayFromListRandom();
         }
         // I - restore guitar audio on correct note
         else

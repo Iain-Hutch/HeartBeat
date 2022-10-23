@@ -27,8 +27,8 @@ public class ArrowProps : MonoBehaviour
         {
             transform.Translate(0, -100f * Time.deltaTime, 0);
         }
-        if ((main_script.incTime - time) > 10f) {
-            Object.Destroy(this);
+        if ((main_script.incTime - time) > 3.7f+duration) {
+            Object.Destroy(this.gameObject);
             if (Equals(direction, "L"))
             {
                 main_script.leftArrows.RemoveAt(0);
