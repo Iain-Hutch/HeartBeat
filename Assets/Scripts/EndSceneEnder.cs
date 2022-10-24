@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class EndSceneEnder : MonoBehaviour
 {
-
+    [SerializeField] private float waitTime;
     float incTime = 0f;
     // Start is called before the first frame update
     void Start()
@@ -17,7 +17,7 @@ public class EndSceneEnder : MonoBehaviour
     void Update()
     {
         incTime = incTime + Time.deltaTime;
-        if (incTime > 5f)
+        if (incTime > waitTime)
         {
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
