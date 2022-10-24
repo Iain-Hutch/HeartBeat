@@ -117,6 +117,11 @@ public class MainScript : MonoBehaviour
     float downDownTime = 0;
     float rightDownTime = 0;
 
+    public GameObject currentLeft = null;
+    public GameObject currentUp = null;
+    public GameObject currentDown = null;
+    public GameObject currentRight = null;
+
     // I - AUDIO PLAYERS
 
     [SerializeField] private PlaySoundQuick backings = null;
@@ -129,16 +134,14 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(PlayerPrefs.GetString("Difficulty"));
+        Debug.Log(PlayerPrefs.GetString("Level"));
         difficulty = PlayerPrefs.GetString("Difficulty");
         level = PlayerPrefs.GetString("Level");
 
         prevHighScore = PlayerPrefs.GetInt(difficulty + level);
         Debug.Log("Your previous high score on level " + level + " at " + difficulty + " is " + prevHighScore);
         Application.targetFrameRate = 60;
-
-        // I - testing purposes
-        difficulty = "Hard";
-        level = "3";
 
         TextAsset input = Resources.Load(level+"-"+difficulty) as TextAsset;
         string inputText = input.text;
@@ -396,11 +399,16 @@ public class MainScript : MonoBehaviour
                 {
                     SceneManager.LoadScene(6, LoadSceneMode.Single);
                     PlayerPrefs.SetString("Level", "2");
+                    if (!(PlayerPrefs.GetString("MaxCompletedLevel") == "2"))
+                    {
+                        PlayerPrefs.SetString("MaxCompletedLevel", "1");
+                    }
                 }
                 if (level == "2")
                 {
                     SceneManager.LoadScene(7, LoadSceneMode.Single);
                     PlayerPrefs.SetString("Level", "3");
+                    PlayerPrefs.SetString("MaxCompletedLevel", "2");
                 }
                 if (level == "3")
                 {
