@@ -417,7 +417,7 @@ public class MainScript : MonoBehaviour
             }
             if (PlayerPrefs.GetString("Mode") == "free")
             {
-
+                SceneManager.LoadScene(9, LoadSceneMode.Single);
             }
         }
 
