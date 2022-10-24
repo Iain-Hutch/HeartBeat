@@ -682,7 +682,6 @@ public class MainScript : MonoBehaviour
     public void endGame()
     {
         Debug.Log("You Lose :(");
-        gameOver = true;
         SceneManager.LoadScene(8, LoadSceneMode.Single);
     }
 
